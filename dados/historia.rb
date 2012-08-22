@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 # DEVE GUARDAR SOMENTE VALORES E NOME DAS SUBDIVISOES
-module Dinheiro
+module Monetizacao
   class Financeiro
     attr_accessor :subdivisoes
     attr_accessor :subdivisao_principal
@@ -65,6 +65,9 @@ module Temporizacao
     end
   end
 end
+
+include Monetizacao
+include Temporizacao
 
 module DSL
   class ContextoTempo
@@ -269,9 +272,6 @@ def bigbang(&block)
   contexto = ContextoTempo.new(@tempo)
   contexto.instance_eval &block
 end
-
-include Monetizacao
-include Temporizacao
 include DSL
 
 bigbang do
