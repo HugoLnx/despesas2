@@ -4,18 +4,13 @@ module DSL
       @tempo = tempo
     end
 
-    def eval(&block)
-      self.instance_eval &block
+    def eval(historia)
+      self.instance_eval historia
     end
 
-    def ano(num, &block)
-      ano = Temporizacao::Ano.new @tempo.financeiro.clone
-      @tempo.anos[num] = ano
-
-      contexto = ContextoAno.new(ano)
+    def bigbang(&block)
+      contexto = DSL::ContextoBigbang.new(@tempo)
       contexto.eval &block
-
-      @tempo.financeiro = ano.financeiro
     end
   end
 end
