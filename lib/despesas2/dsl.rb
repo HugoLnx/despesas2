@@ -1,0 +1,7 @@
+require './lib/despesas2/dsl/contexto_ano'
+require './lib/despesas2/dsl/contexto_credito'
+require './lib/despesas2/dsl/contexto_debito'
+require './lib/despesas2/dsl/contexto_mes'
+require './lib/despesas2/dsl/contexto_organizacao'
+require './lib/despesas2/dsl/contexto'
+require './lib/despesas2/dsl/contexto_tempo'
