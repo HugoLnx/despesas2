@@ -1,14 +1,4 @@
 # encoding: utf-8
-
-require './lib/despesas2.rb'
-
-@tempo = Temporizacao::Tempo.new(Monetizacao::Financeiro.new)
-
-def bigbang(&block)
-  contexto = DSL::ContextoTempo.new(@tempo)
-  contexto.eval &block
-end
-
 bigbang do
   ano 2012 do
     julho do
