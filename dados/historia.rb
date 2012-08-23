@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-# DEVE GUARDAR SOMENTE VALORES E NOME DAS SUBDIVISOES
 module Monetizacao
   class Financeiro
     attr_accessor :subdivisoes
@@ -11,8 +10,20 @@ module Monetizacao
     def initialize
       @subdivisoes = {}
       @subdivisao_principal = nil
-      @creditos_mensais = {} # tirar isso (nao deve guardar descricoes ou nomes) 
-      @debitos_mensais = {}  # tirar isso (nao deve guardar descricoes ou nomes) 
+      @creditos_mensais = {}
+      @debitos_mensais = {}
+    end
+
+    def clone
+      clone = super
+      clone_subdivisoes = {}
+      @subdivisoes.each do |nome, subdivisao|
+        clone_subdivisoes[nome] = subdivisao.clone
+      end
+      clone.subdivisoes = clone_subdivisoes
+      clone.creditos_mensais = @creditos_mensais.clone
+      clone.debitos_mensais = @debitos_mensais.clone
+      return clone
     end
   end
 
@@ -22,7 +33,13 @@ module Monetizacao
     def initialize
       @padrao = 0.0
       @valor = 0.0
-      @debitos_mensais = {} #tirar isso (nao deve guardar descricoes ou nomes)
+      @debitos_mensais = {}
+    end
+
+    def clone
+      clone = super
+      clone.debitos_mensais = @debitos_mensais.clone
+      return clone
     end
 
     def depositar(valor)
@@ -35,7 +52,6 @@ module Monetizacao
   end
 end
 
-# DEVE GUARDAR DESCRICOES E VALORES A SEREM INSERIDOS
 module Temporizacao
   class Tempo
     attr_accessor :anos, :financeiro
@@ -57,11 +73,68 @@ module Temporizacao
     end
   end
 
+  module Debito
+    def self.calcular(valor, total)
+      if valor.is_a? String
+        porcentagem = valor.gsub(/\%/, "").to_f
+        return (total * porcentagem) / 100.0
+      end
+
+      return valor
+    end
+  end
+
   class Mes
     attr_accessor :financeiro
+    attr_accessor :creditos
+    attr_accessor :debitos
 
     def initialize(financeiro)
       @financeiro = financeiro
+      @creditos = {}
+      @debitos = {}
+    end
+
+    def aplicar_creditos_e_debitos
+      credito = soma_creditos(:total)
+      debito = soma_debitos(:total, credito)
+
+      saldo = credito
+      saldo -= debito
+
+      @financeiro.subdivisoes.each do |nome, subdivisao|
+        padrao = Debito.calcular(subdivisao.padrao, credito)
+        saldo -= padrao
+
+        subdivisao.valor += padrao
+        subdivisao.valor += soma_creditos(nome)
+        subdivisao.valor -= soma_debitos(nome, credito, subdivisao)
+      end
+
+      principal = @financeiro.subdivisao_principal
+      @financeiro.subdivisoes[principal].valor += saldo
+    end
+  private
+
+    def soma_creditos(nome)
+      total = @creditos.values.select{|(name,valor)| name == nome}.map(&:last).inject(0.0, &:+)
+      if nome == :total
+        total += @financeiro.creditos_mensais.values.inject(0.0, &:+)
+      end
+      return total
+    end
+
+    def soma_debitos(nome, credito, subdivisao=nil)
+      debitos = @debitos.values
+      if nome == :total && subdivisao.nil?
+        mensais = @financeiro.debitos_mensais
+      else
+        mensais = subdivisao.debitos_mensais
+      end
+      debitos += mensais.values.map{|valor| [nome, valor]}
+      debitos = debitos.map{|(sub,valor)| [sub, Debito.calcular(valor, credito)]}
+      debitos = debitos.select{|(sub,val)| sub == nome}
+      return debitos.map(&:last).inject(0.0, &:+)
     end
   end
 end
@@ -103,6 +176,7 @@ module DSL
         contexto = ContextoMes.new(mes)
         contexto.eval &block
 
+        mes.aplicar_creditos_e_debitos
         @ano.financeiro = mes.financeiro
       end
     end
@@ -125,17 +199,13 @@ module DSL
     end
 
     def credito(&block)
-      contexto = ContextoCredito.new(@mes.financeiro.clone)
+      contexto = ContextoCredito.new(@mes)
       contexto.eval &block
-
-      @mes.financeiro = contexto.financeiro
     end
 
     def debito(&block)
-      contexto = ContextoDebito.new(@mes.financeiro.clone)
+      contexto = ContextoDebito.new(@mes)
       contexto.eval &block
-
-      @mes.financeiro = contexto.financeiro
     end
   end
 
@@ -180,10 +250,10 @@ module DSL
   end
 
   class ContextoCredito
-    attr_reader :financeiro
+    attr_reader :mes
 
-    def initialize(financeiro)
-      @financeiro = financeiro
+    def initialize(mes)
+      @mes = mes
 
       @contexto = contexto
     end
@@ -195,12 +265,17 @@ module DSL
   private
 
     def contexto
-      financeiro = @financeiro
+      financeiro = @mes.financeiro
+      mes = @mes
+      subdivisoes = financeiro.subdivisoes.keys
+      subdivisoes << :total
 
       return Contexto.new do
-        financeiro.subdivisoes.each_key do |nome|
-          define_method nome do |valor|
-            financeiro.subdivisoes[nome].depositar valor
+        subdivisoes.each do |nome|
+          define_method nome do |hash|
+            desc = hash.keys.first
+            valor = hash.values.first
+            mes.creditos[desc] = [nome, valor]
           end
         end
 
@@ -214,10 +289,10 @@ module DSL
   end
 
   class ContextoDebito
-    attr_reader :financeiro
+    attr_reader :mes
 
-    def initialize(financeiro)
-      @financeiro = financeiro
+    def initialize(mes)
+      @mes = mes
 
       @contexto = contexto
     end
@@ -229,12 +304,17 @@ module DSL
   private
 
     def contexto
-      financeiro = @financeiro
+      financeiro = @mes.financeiro
+      mes = @mes
+      subdivisoes = financeiro.subdivisoes.keys
+      subdivisoes << :total
 
       return Contexto.new do
-        financeiro.subdivisoes.each_key do |nome|
-          define_method nome do |valor|
-            financeiro.subdivisoes[nome].debitar valor
+        subdivisoes.each do |nome|
+          define_method nome do |hash|
+            desc = hash.keys.first
+            valor = hash.values.first
+            mes.debitos[desc] = [nome, valor]
           end
         end
 
@@ -286,8 +366,8 @@ bigbang do
       end
   
       credito do
-        resto 1000.0
-        cofre 2000.0
+        resto "resto inicial" => 1000.0
+        cofre "cofre inicial" => 2000.0
       end
     end
   
@@ -295,7 +375,8 @@ bigbang do
       organizacao do
         novas_subdivisoes(
           :saude, :presentes,
-          :roupas, :lazer
+          :roupas, :lazer,
+          :aposentadoria
         )
   
         padroes(
@@ -304,7 +385,8 @@ bigbang do
           saude: 100.0,
           presentes: 100.0,
           roupas: 100.0,
-          lazer: 200.0
+          lazer: 200.0,
+          aposentadoria: "10%"
         )
       end
   
@@ -321,11 +403,11 @@ bigbang do
 
     setembro do
       credito do
-        #total 100.0 #total "extra" => 100.0
+        total "extra" => 100.0
       end
 
       debito do
-        #doacoes 10.0 #doacoes "caridade" => 10.0
+        doacoes "caridade" => 10.0
       end
     end
   end
