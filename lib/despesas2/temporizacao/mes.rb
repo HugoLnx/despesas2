@@ -10,6 +10,24 @@ module Temporizacao
       @debitos = {}
     end
 
+    def clone
+      clone = super
+      clone.financeiro = @financeiro.clone
+      creditos = {}
+      @creditos.each_pair do |nome, credito|
+        creditos[nome] = credito.clone
+      end
+      clone.creditos = creditos
+
+      debitos = {}
+      @debitos.each_pair do |nome, debito|
+        debitos[nome] = debito.clone
+      end
+      clone.debitos = debitos
+
+      return clone
+    end
+
     def aplicar_creditos_e_debitos
       credito = soma_creditos(:total)
       debito = soma_debitos(:total, credito)

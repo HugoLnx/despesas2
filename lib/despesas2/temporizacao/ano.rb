@@ -9,5 +9,16 @@ module Temporizacao
       @financeiro = financeiro
       @meses = {}
     end
+
+    def clone
+      clone = super
+      clone.financeiro = @financeiro.clone
+      clone_meses = {}
+      @meses.each_pair do |nome, mes|
+        clone_meses[nome] = mes.clone
+      end
+      clone.meses = clone_meses
+      return clone
+    end
   end
 end

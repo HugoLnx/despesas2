@@ -45,15 +45,5 @@ bigbang do
         mensal "anália franco", doacoes: 25.0
       end
     end
-
-    setembro do
-      credito do
-        total "extra" => 100.0
-      end
-
-      debito do
-        doacoes "caridade" => 10.0
-      end
-    end
   end
 end

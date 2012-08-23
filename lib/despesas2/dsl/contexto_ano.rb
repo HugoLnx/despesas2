@@ -1,7 +1,8 @@
 module DSL
   class ContextoAno
-    def initialize(ano)
+    def initialize(ano, ignorar_mes=lambda{|nome| return false})
       @ano = ano
+      @ignorar_mes = ignorar_mes
     end
 
     def eval(&block)
@@ -10,6 +11,7 @@ module DSL
     
     Temporizacao::Ano::MESES.each do |nome|
       define_method nome do |&block|
+        return if @ignorar_mes.call(nome)
         mes = Temporizacao::Mes.new @ano.financeiro.clone
         @ano.meses[nome] = mes
 
