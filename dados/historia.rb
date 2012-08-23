@@ -2,12 +2,10 @@
 
 require './lib/despesas2.rb'
 
-include DSL
-
 @tempo = Temporizacao::Tempo.new(Monetizacao::Financeiro.new)
 
 def bigbang(&block)
-  contexto = ContextoTempo.new(@tempo)
+  contexto = DSL::ContextoTempo.new(@tempo)
   contexto.eval &block
 end
 
