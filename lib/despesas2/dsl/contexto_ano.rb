@@ -10,9 +10,10 @@ module DSL
     end
     
     Temporizacao::Ano::MESES.each do |nome|
-      define_method nome do |&block|
+      define_method nome do |fechou=nil, &block|
         return if @ignorar_mes.call(nome)
         mes = Temporizacao::Mes.new @ano.financeiro.clone
+        mes.fechamento = fechou[:fechou] unless fechou.nil?
         @ano.meses[nome] = mes
 
         contexto = ContextoMes.new(mes)

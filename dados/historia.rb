@@ -1,7 +1,7 @@
 # encoding: utf-8
 bigbang do
   ano 2012 do
-    julho do
+    julho fechou: 5000.0 do
       organizacao do
         nova_subdivisao :resto
         subdivisao_principal :resto
@@ -11,7 +11,6 @@ bigbang do
       end
   
       credito do
-        resto "resto inicial" => 1000.0
         cofre "cofre inicial" => 2000.0
       end
     end

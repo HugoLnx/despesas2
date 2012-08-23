@@ -12,6 +12,12 @@ module Monetizacao
       @debitos_mensais = {}
     end
 
+    def saldo_sem_resto
+      subs = @subdivisoes.select{|nome, sub| nome != @subdivisao_principal}.map(&:last)
+      p subs.map(&:valor).inject(&:+)
+      return subs.map(&:valor).inject(&:+)
+    end
+
     def clone
       clone = super
       clone_subdivisoes = {}

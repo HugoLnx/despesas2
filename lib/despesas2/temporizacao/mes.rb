@@ -3,11 +3,13 @@ module Temporizacao
     attr_accessor :financeiro
     attr_accessor :creditos
     attr_accessor :debitos
+    attr_accessor :fechamento
 
     def initialize(financeiro)
       @financeiro = financeiro
       @creditos = {}
       @debitos = {}
+      @fechamento = nil
     end
 
     def clone
@@ -44,8 +46,14 @@ module Temporizacao
         subdivisao.valor -= soma_debitos(nome, credito, subdivisao)
       end
 
-      principal = @financeiro.subdivisao_principal
-      @financeiro.subdivisoes[principal].valor += saldo
+      nome = @financeiro.subdivisao_principal
+      principal = @financeiro.subdivisoes[nome]
+      if @fechamento.nil?
+        principal.valor += saldo
+      else
+        sem_resto = @financeiro.saldo_sem_resto
+        principal.valor = fechamento - sem_resto
+      end
     end
   private
 
