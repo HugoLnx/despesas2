@@ -1,4 +1,9 @@
+# encoding: utf-8
 class Planejamento
+  PLANEJAMENTO_PATH = "./dados/planejamento.rb"
+  EXEMPLO_PATH ="./dados/planejamento.exemplo.rb"
+  WARN_MSG = "Você está usando o arquivo de exemplo para o planejamento, para usar seu próprio crie #{PLANEJAMENTO_PATH}" 
+
   def initialize(tempo)
     @tempo = tempo
   end
@@ -7,7 +12,12 @@ class Planejamento
     tempo = @tempo.clone
     tempo = tempo_com_o_ultimo_mes(tempo)
     bigbang = DSL::ContextoTempo.new(tempo)
-    historia = File.read "./dados/planejamento.rb"
+    if File.exist? PLANEJAMENTO_PATH
+      historia = File.read PLANEJAMENTO_PATH
+    else
+      Logger.new(STDOUT).warn(WARN_MSG)
+      historia = File.read EXEMPLO_PATH
+    end
     bigbang.eval historia
     return tempo
   end
