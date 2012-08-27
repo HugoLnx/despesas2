@@ -1,22 +1,6 @@
 <% tempo.anos.each do |ano_nome, ano| %>
 <div class="ano">
   <h2><%= ano_nome %></h2>
-  <ul>
-    <% ano.meses.each do |mes_nome, mes| %>
-    <li class="mes">
-      <h3><%= mes_nome %></h3>
-      <ul class="subdivisoes">
-        <% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
-        <li>
-          <ul class="subdivisao">
-            <li class="nome"><%= nome %></li>
-            <li class="valor"><%= sprintf("%.2f", subdivisao.valor) %></li>
-          </ul>
-        </li>
-        <% end %>
-      </ul>
-      <% end %>
-    </li>
-  </ul>
+	<%= partial :meses, :locals => {:meses => ano.meses} %>
 </div>
 <% end %>

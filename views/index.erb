@@ -8,6 +8,6 @@
     <%= partial :ano, :locals => {:tempo => @tempo} %>
 
     <h1>Planejamento</h1>
-    <%= partial :ano, :locals => {:tempo => @tempop} %>
+    <%= partial :meses, :locals => {:meses => @tempop.anos.values.last.meses} %>
   </body>
 </html>
