@@ -4,7 +4,7 @@
 		<h3><%= mes_nome %></h3>
 		<ul class="subdivisoes">
 			<% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
-			<li>
+			<li class="subdivisao">
 				<ul class="subdivisao">
 					<li class="nome"><%= nome %></li>
 					<li class="valor"><%= sprintf("%.2f", subdivisao.valor) %></li>
