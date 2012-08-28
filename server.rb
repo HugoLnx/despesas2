@@ -17,3 +17,18 @@ get "/" do
   erb :index
 end
 
+helpers do
+  def dinheiro(valor)
+    return sprintf("%.2f", valor)
+  end
+
+  def class_lucro_para(mes, subdivisao=nil)
+    if mes.lucro? subdivisao
+      return "lucro"
+    elsif mes.prejuizo? subdivisao
+      return "prejuizo"
+    else
+      return "estavel"
+    end
+  end
+end

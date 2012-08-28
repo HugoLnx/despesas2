@@ -55,6 +55,36 @@ module Temporizacao
         principal.valor = fechamento - sem_resto
       end
     end
+
+    def total_credito(nome)
+      credito = soma_creditos :total
+      return credito if nome == :total
+
+      creditos_normais = soma_creditos nome
+      padrao = Monetizacao::Debito.calcular(@financeiro.subdivisoes[nome].padrao, credito)
+      return padrao + creditos_normais
+    end
+
+    def total_debito(nome)
+      credito = soma_creditos :total
+      if nome == :total
+        subdivisao = nil
+      else
+        subdivisao = @financeiro.subdivisoes[nome]
+      end
+      return soma_debitos(nome, credito, subdivisao)
+    end
+
+    def lucro?(nome=nil)
+      nome ||= :total
+      return total_credito(nome) > total_debito(nome)
+    end
+
+    def prejuizo?(nome=nil)
+      nome ||= :total
+      return total_credito(nome) < total_debito(nome)
+    end
+
   private
 
     def soma_creditos(nome)

@@ -1,13 +1,15 @@
-<ul>
+<ul class="meses">
 	<% meses.each do |mes_nome, mes| %>
-	<li class="mes">
+  <li class="mes <%= class_lucro_para mes %>">
 		<h3><%= mes_nome %></h3>
 		<ul class="subdivisoes">
 			<% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
-			<li class="subdivisao">
+      <li class="subdivisao <%= class_lucro_para(mes, nome) %>">
 				<ul class="subdivisao">
 					<li class="nome"><%= nome %></li>
-					<li class="valor"><%= sprintf("%.2f", subdivisao.valor) %></li>
+					<li class="valor"><%= dinheiro subdivisao.valor %></li>
+					<li class="credito"><%= dinheiro mes.total_credito(nome) %></li>
+					<li class="debito"><%= dinheiro mes.total_debito(nome) %></li>
 				</ul>
 			</li>
 			<% end %>

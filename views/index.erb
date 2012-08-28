@@ -11,18 +11,49 @@
 
 			li {
 				margin: 5px 10px;
+        border-radius: 10px;
 			}
 
 			.subdivisao {
 				display: inline-block;
+        width: 130px;
+        text-align: center;
 			}
+
+			li.mes.lucro    { background-color: #dfd; }
+			li.mes.prejuizo { background-color: #fdd; }
+			li.mes.estavel  { background-color: #ddf; }
+
+			li.subdivisao.lucro    { background-color: #afa; }
+			li.subdivisao.prejuizo { background-color: #faa; }
+			li.subdivisao.estavel  { background-color: #aaf; }
+
+      li.credito:before {
+        content: "+";
+      }
+
+      li.debito:before {
+        content: "-";
+      }
+
+      li.credito, li.debito {
+        display: inline;
+        padding: 0;
+        margin: 0 1px;
+      }
+
+      div.divisoria {
+        background-color: black;
+        height: 10px;
+        border-radius: 10px;
+      }
 		</style>
   </head>
   <body>
-    <h1>Historia</h1>
     <%= partial :ano, :locals => {:tempo => @tempo} %>
 
-    <h1>Planejamento</h1>
+    <div class="divisoria"></div>
+
     <%= partial :meses, :locals => {:meses => @tempop.anos.values.last.meses} %>
   </body>
 </html>
