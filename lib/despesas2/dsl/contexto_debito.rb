@@ -29,6 +29,18 @@ module DSL
           end
         end
 
+        define_method :emprestado do |options|
+          para = options[:para]
+          descricao = options[:descricao]
+          quantidade = options[:quantidade]
+          jah_esta_incluido_no_total = options[:jah_esta_incluido_no_total]
+
+          financeiro.emprestimos[para] += quantidade
+          unless jah_esta_incluido_no_total
+            financeiro.principal.valor -= quantidade
+          end
+        end
+
         define_method :mensal do |nome_ou_hash, hash=nil|
           if hash.nil?
             hash = nome_ou_hash

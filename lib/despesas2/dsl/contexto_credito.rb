@@ -29,6 +29,23 @@ module DSL
           end
         end
 
+        define_method :devolveu do |hash_ou_quem|
+          if hash_ou_quem.is_a? Hash
+            quem = hash_ou_quem.keys.first
+            quantidade = hash_ou_quem.values.first
+          else
+            quem = hash_ou_quem
+            quantidade = financeiro.emprestimos[quem]
+          end
+
+          financeiro.emprestimos[quem] -= quantidade
+          financeiro.principal.valor += quantidade
+
+          if financeiro.emprestimos[quem] <= 0
+            financeiro.emprestimos.delete quem
+          end
+        end
+
         define_method :mensal do |hash|
           nome = hash.keys.first
           valor = hash.values.first
