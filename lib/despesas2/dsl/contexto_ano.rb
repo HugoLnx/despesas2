@@ -16,10 +16,12 @@ module DSL
         mes.fechamento = fechou[:fechou] unless fechou.nil?
         @ano.meses[nome] = mes
 
+        mes.financeiro.debitos_mensais_como_nao_pagos
         contexto = ContextoMes.new(mes)
         contexto.eval &block
 
         mes.aplicar_creditos_e_debitos
+
         @ano.financeiro = mes.financeiro
       end
     end

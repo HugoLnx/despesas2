@@ -54,11 +54,15 @@ module DSL
             financeiro.subdivisoes[subdivisao].debitos_mensais[nome] = Monetizacao::Debito.new(valor)
           end
         end
-#
-#        define_method :mensal_pago do |nome| do
-#          debito = financeiro.debitos_mensais[nome]
-#          debito ||= financeiro.subdivisoes.find{|nome,sub| sub.debitos_menais[nome]}[1].debitos_mensais[nome]
-#        end
+
+        define_method :mensal_pago do |nome|
+          debito = financeiro.debitos_mensais[nome]
+
+          subdivisao_pair = financeiro.subdivisoes.find{|_,sub| sub.debitos_mensais[nome]}
+          debito ||= subdivisao_pair && subdivisao_pair.last.debitos_mensais[nome]
+
+          debito && debito.pago = true
+        end
 
       end
     end

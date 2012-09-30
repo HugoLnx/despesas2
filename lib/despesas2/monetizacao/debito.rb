@@ -1,6 +1,7 @@
 module Monetizacao
   class Debito
     attr_reader :valor, :pago
+    attr_writer :pago
 
     def initialize(valor, pago=false)
       @valor = valor

@@ -8,9 +8,21 @@ module Monetizacao
       @debitos_mensais = {}
     end
 
+    def debitos_mensais_como_nao_pagos
+      @debitos_mensais.each do |_, debito|
+        debito.pago = false
+      end
+    end
+
     def clone
       clone = super
-      clone.debitos_mensais = @debitos_mensais.clone
+
+      clone_debitos = {}
+      @debitos_mensais.each do |desc, debito|
+        clone_debitos[desc] = debito.clone
+      end
+      clone.debitos_mensais = clone_debitos
+
       return clone
     end
 

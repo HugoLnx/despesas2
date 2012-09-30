@@ -14,6 +14,13 @@ module Historia
       historia = File.read EXEMPLO_PATH
     end
     bigbang.eval historia
+
+    p tempo.anos[2012].meses[:agosto].financeiro.debitos_mensais
+    puts tempo.anos[2012].meses[:agosto].financeiro.subdivisoes.map{|(_,s)| s.debitos_mensais}
+    p "    "
+    p tempo.anos[2012].meses[:setembro].financeiro.debitos_mensais
+    puts tempo.anos[2012].meses[:setembro].financeiro.subdivisoes.map{|(_,s)| s.debitos_mensais}
+
     return tempo
   end
 end
