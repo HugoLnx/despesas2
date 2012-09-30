@@ -1,5 +1,16 @@
 module Monetizacao
-  module Debito
+  class Debito
+    attr_reader :valor, :pago
+
+    def initialize(valor, pago=false)
+      @valor = valor
+      @pago = pago
+    end
+
+    def self.pago(valor)
+      return Debito.new(valor, true)
+    end
+
     def self.calcular(valor, total)
       if valor.is_a? String
         porcentagem = valor.gsub(/\%/, "").to_f

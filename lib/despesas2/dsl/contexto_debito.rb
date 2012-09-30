@@ -25,7 +25,7 @@ module DSL
           define_method nome do |hash|
             desc = hash.keys.first
             valor = hash.values.first
-            mes.debitos[desc] = [nome, valor]
+            mes.debitos[desc] = [nome, Monetizacao::Debito.pago(valor)]
           end
         end
 
@@ -46,14 +46,20 @@ module DSL
             hash = nome_ou_hash
             nome = hash.keys.first
             valor = hash.values.first
-            financeiro.debitos_mensais[nome] = valor
+            financeiro.debitos_mensais[nome] = Monetizacao::Debito.new(valor)
           else
             nome = nome_ou_hash
             subdivisao = hash.keys.first
             valor = hash.values.first
-            financeiro.subdivisoes[subdivisao].debitos_mensais[nome] = valor
+            financeiro.subdivisoes[subdivisao].debitos_mensais[nome] = Monetizacao::Debito.new(valor)
           end
         end
+#
+#        define_method :mensal_pago do |nome| do
+#          debito = financeiro.debitos_mensais[nome]
+#          debito ||= financeiro.subdivisoes.find{|nome,sub| sub.debitos_menais[nome]}[1].debitos_mensais[nome]
+#        end
+
       end
     end
   end
