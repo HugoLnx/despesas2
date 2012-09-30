@@ -21,6 +21,36 @@
         text-align: center;
 			}
 
+      li.divida > ul > li.nome {
+        font-weight: bold;
+      }
+
+      li.divida > ul > li.nome:after {
+        content: ":";
+      }
+
+      li.divida > ul > li {
+        padding: 0;
+        margin: 0;
+				display: inline-block;
+      }
+
+			li.divida {
+				display: inline-block;
+			}
+
+      div.dividas {
+        background-color: #fdd;
+      }
+
+      div.dividas > h4:after {
+        content: " >";
+      }
+
+      div.dividas > h4, div.dividas > ul {
+        display: inline;
+      }
+
 			li.mes.lucro    { background-color: #dfd; }
 			li.mes.prejuizo { background-color: #fdd; }
 			li.mes.estavel  { background-color: #ddf; }

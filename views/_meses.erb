@@ -2,6 +2,21 @@
 	<% meses.each do |mes_nome, mes| %>
   <li class="mes <%= class_lucro_para mes %>">
 		<h3><%= mes_nome %></h3>
+    <% unless mes.debitos_pendentes.empty? %>
+      <div class="dividas">
+        <h4>Dívidas</h4>
+        <ul>
+          <% mes.debitos_pendentes.each do |nome, debito| %>
+            <li class="divida">
+              <ul>
+                <li class="nome"><%= nome %></li>
+                <li class="valor"><%= dinheiro debito %></li>
+              </ul>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 		<ul class="subdivisoes">
 			<% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
       <li class="subdivisao <%= class_lucro_para(mes, nome) %>">
