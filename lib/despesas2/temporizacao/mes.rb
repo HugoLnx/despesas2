@@ -107,16 +107,14 @@ module Temporizacao
     end
 
     def soma_debitos(nome, credito, subdivisao=nil)
-      debitos = @debitos.values
-                  .find_all{|(_, debito)| debito.pago?}
-                  .map{|(nome, debito)| [nome, debito.valor]}
+      debitos = @debitos.values.map{|(nome, debito)| [nome, debito.valor]}
 
       if nome == :total && subdivisao.nil?
         mensais = @financeiro.debitos_mensais
       else
         mensais = subdivisao.debitos_mensais
       end
-      debitos += mensais.values.find_all(&:pago?).map{|debito| [nome, debito.valor]}
+      debitos += mensais.values.map{|debito| [nome, debito.valor]}
       debitos = debitos.map{|(sub,valor)| [sub, Monetizacao::Debito.calcular(valor, credito)]}
       debitos = debitos.select{|(sub,val)| sub == nome}
       return debitos.map(&:last).inject(0.0, &:+)
