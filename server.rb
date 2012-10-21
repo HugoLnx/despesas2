@@ -29,10 +29,10 @@ helpers do
     return sprintf("%.2f", valor)
   end
 
-  def class_lucro_para(mes, subdivisao=nil)
-    if mes.lucro? subdivisao
+  def class_lucro(valor)
+    if valor > 0
       return "lucro"
-    elsif mes.prejuizo? subdivisao
+    elsif valor < 0
       return "prejuizo"
     else
       return "estavel"

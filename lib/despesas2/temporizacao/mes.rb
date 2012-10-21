@@ -86,14 +86,8 @@ module Temporizacao
       debitos.map{|(nome, debito)| [nome, Monetizacao::Debito.calcular(debito.valor, credito)]}
     end
 
-    def lucro?(nome=nil)
-      nome ||= :total
-      return total_credito(nome) > total_debito(nome)
-    end
-
-    def prejuizo?(nome=nil)
-      nome ||= :total
-      return total_credito(nome) < total_debito(nome)
+    def diff(nome=:total)
+      total_credito(nome) - total_debito(nome)
     end
 
   private

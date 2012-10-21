@@ -1,6 +1,6 @@
 <ul class="meses">
 	<% meses.each do |mes_nome, mes| %>
-  <li class="mes <%= class_lucro_para mes %>">
+  <li class="mes <%= class_lucro mes.diff %>">
 		<h3><%= mes_nome %></h3>
     <% unless mes.debitos_pendentes.empty? %>
       <div class="dividas">
@@ -19,13 +19,13 @@
     <% end %>
 		<ul class="subdivisoes">
 			<% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
-      <li class="subdivisao <%= class_lucro_para(mes, nome) %>">
-				<ul class="subdivisao">
-					<li class="nome"><%= nome %></li>
-					<li class="valor"><%= dinheiro subdivisao.valor %></li>
-					<li class="credito"><%= dinheiro mes.total_credito(nome) %></li>
-					<li class="debito"><%= dinheiro mes.total_debito(nome) %></li>
-				</ul>
+      <li class="subdivisao">
+				<%= partial :subdivisao, :locals => {
+					nome: nome,
+					valor: subdivisao.valor,
+					credito: mes.total_credito(nome),
+					debito: mes.total_debito(nome)
+				} %>
 			</li>
 			<% end %>
 		</ul>
