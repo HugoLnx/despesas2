@@ -17,6 +17,13 @@ get "/" do
   erb :index
 end
 
+get "/emprestimos" do
+  @tempo = Historia.carregar_tempo
+  @tempop = Planejamento.new(@tempo).carregar_tempo
+
+  erb :emprestimos
+end
+
 helpers do
   def dinheiro(valor)
     return sprintf("%.2f", valor)

@@ -40,10 +40,6 @@ module DSL
 
           financeiro.emprestimos[quem] -= quantidade
           financeiro.principal.valor += quantidade
-
-          if financeiro.emprestimos[quem] <= 0
-            financeiro.emprestimos.delete quem
-          end
         end
 
         define_method :mensal do |hash|

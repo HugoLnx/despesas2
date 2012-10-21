@@ -19,6 +19,11 @@ module Monetizacao
       return subs.map(&:valor).inject(&:+)
     end
 
+    def each_emprestimo(&block)
+      emps = @emprestimos.to_a.sort_by(&:last).reverse
+      emps.each{|(nome, valor)| block.call(nome, valor)}
+    end
+
     def debitos_mensais_como_nao_pagos
       @debitos_mensais.each do |_, debito|
         debito.pago = false
