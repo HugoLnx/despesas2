@@ -24,6 +24,7 @@
 					anterior: mes_i.zero? ? nil : meses.values[mes_i-1]
 				} %>
 			</li>
+
 			<% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
 				<% if nome != :resto %>
 					<li class="subdivisao">
@@ -36,6 +37,15 @@
 					</li>
 			  <% end %>
 			<% end %>
+
+      <li class="subdivisao">
+      <%= partial :subdivisao, :locals => {
+        nome: "Liquido",
+        valor: mes.total_credito(:total) - mes.debito_total,
+        credito: mes.total_credito(:total),
+        debito: mes.debito_total
+      } %>
+      </li>
 		</ul>
 		<% end %>
 	</li>

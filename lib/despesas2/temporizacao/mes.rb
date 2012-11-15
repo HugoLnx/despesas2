@@ -75,6 +75,12 @@ module Temporizacao
       return soma_debitos(nome, credito, subdivisao)
     end
 
+    def debito_total
+      nomes = @financeiro.subdivisoes.map{|nome, _| nome}
+      nomes.delete(:resto)
+      nomes.map{|nome| total_credito(nome)}.inject(:+)
+    end
+
     def debitos_pendentes
       debitos = @financeiro.debitos_mensais.to_a
       debitos += @financeiro.subdivisoes.inject([]){|debitos, (_, sub)| debitos + sub.debitos_mensais.to_a}
