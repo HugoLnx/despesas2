@@ -9,7 +9,8 @@ module DSL
       self.instance_eval &block
     end
     
-    Temporizacao::Mes::NOMES.each.with_index do |nome, numero|
+    Temporizacao::Mes::NOMES.each.with_index do |nome, i|
+      numero = i + 1
       define_method nome do |fechou=nil, &block|
         mes = Temporizacao::Mes.new(@ano.financeiro.clone, numero)
         return if @ignorar_mes.call(mes, @ano)

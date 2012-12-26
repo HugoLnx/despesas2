@@ -31,6 +31,14 @@ module Temporizacao
       @meses[i]
     end
 
+    def delete_at(i)
+      @meses.delete_at(i)
+    end
+
+    def empty?
+      @meses.empty?
+    end
+
     def each(&block)
       @meses.each(&block)
     end

@@ -25,6 +25,14 @@ module Temporizacao
       @anos[i]
     end
 
+    def delete_at(i)
+      @anos.delete_at(i)
+    end
+
+    def empty?
+      @anos.empty?
+    end
+
     def each(&block)
       @anos.each(&block)
     end

@@ -19,6 +19,10 @@ class Planejamento
       planejamento = File.read EXEMPLO_PATH
     end
     contexto.eval planejamento
+
+    tempo.anos.first.meses.delete_at(0)
+    tempo.anos.delete_at(0) if tempo.anos.first.meses.empty?
+
     tempo
   end
 
