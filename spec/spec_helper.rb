@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 Bundler.setup(:default)
 Bundler.setup(:test)
-#require './lib/despesas2/model.rb'
+require './lib/despesas2.rb'
 
 require 'factory_girl'
 
