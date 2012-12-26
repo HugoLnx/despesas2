@@ -1,7 +1,7 @@
 <ul class="meses">
-	<% meses.each_pair.with_index do |(mes_nome, mes), mes_i| %>
+	<% meses.each.with_index do |mes, mes_i| %>
   <li class="mes <%= class_lucro mes.diff %>">
-		<h3><%= mes_nome %></h3>
+		<h3><%= mes.nome %></h3>
     <% unless mes.debitos_pendentes.empty? %>
       <div class="dividas">
         <h4>Dívidas</h4>
@@ -21,7 +21,7 @@
       <li class="subdivisao">
 				<%= partial :subdivisao_resto, :locals => {
 					atual: mes,
-					anterior: mes_i.zero? ? nil : meses.values[mes_i-1]
+					anterior: mes_i.zero? ? nil : meses.at(mes_i-1)
 				} %>
 			</li>
 

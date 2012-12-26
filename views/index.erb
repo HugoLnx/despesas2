@@ -82,10 +82,14 @@
 		</style>
   </head>
   <body>
-    <%= partial :ano, :locals => {:tempo => @tempo} %>
+    <%= partial :anos, :locals => {:tempo => @tempo} %>
 
     <div class="divisoria"></div>
 
-    <%= partial :meses, :locals => {:meses => @tempop.anos.values.last.meses} %>
+    <% if @tempo.anos.last.meses.last.nome == :dezembro %>
+      <%= partial :anos, :locals => {:tempo => @tempop} %>
+    <% else %>
+      <%= partial :meses, :locals => {:meses => @tempop.anos.last.meses} %>
+    <% end %>
   </body>
 </html>

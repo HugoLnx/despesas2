@@ -2,10 +2,21 @@ module DSL
   class ContextoPlanejamento
     def initialize(tempo)
       @tempo = tempo
-      @ignorar_ano = lambda{|ano| return ano < @tempo.anos.keys.last}
-      meses = Temporizacao::Ano::MESES
-      ultimo_mes = @tempo.anos.values.last.meses.keys.last
-      @ignorar_mes = lambda{|mes| return (meses.index(mes) <= meses.index(ultimo_mes))}
+      meses = Temporizacao::Mes::NOMES
+      ultimo_ano = @tempo.anos.last
+      ultimo_mes = ultimo_ano.meses.last
+      @ignorar_ano = lambda do |ano|
+        eh_ano_anterior = ano < ultimo_ano
+        eh_ultimo_mes_do_ano = ano == ultimo_ano && ultimo_mes.nome == :dezembro
+        return eh_ano_anterior || eh_ultimo_mes_do_ano
+      end
+
+      @ignorar_mes = lambda do |mes, ano|
+        eh_ano_atual = ultimo_ano == ano
+        eh_ano_anterior = ano < ultimo_ano
+        eh_mes_anterior = mes <= ultimo_mes
+        return eh_ano_atual && eh_mes_anterior || eh_ano_anterior
+      end
     end
 
     def eval(&block)
@@ -13,9 +24,9 @@ module DSL
     end
 
     def ano(num, &block)
-      return if @ignorar_ano.call(num)
-      ano = Temporizacao::Ano.new @tempo.financeiro.clone
-      @tempo.anos[num] = ano
+      ano = Temporizacao::Ano.new(@tempo.financeiro.clone, num)
+      return if @ignorar_ano.call(ano)
+      @tempo.anos << ano
 
       contexto = ContextoAno.new(ano, @ignorar_mes)
       contexto.eval &block

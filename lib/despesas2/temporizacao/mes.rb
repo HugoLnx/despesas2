@@ -1,33 +1,45 @@
+# encoding: utf-8
 module Temporizacao
   class Mes
+    include Comparable
+
+    NOMES = %w{janeiro fevereiro março abril maio junho julho agosto setembro outubro novembro dezembro}.map(&:to_sym)
+
     attr_accessor :financeiro
     attr_accessor :creditos
     attr_accessor :debitos
     attr_accessor :fechamento
+    attr_reader :numero
 
-    def initialize(financeiro)
+    def initialize(financeiro, numero, creditos={}, debitos={}, fechamento=nil)
       @financeiro = financeiro
+      @numero = numero
       @creditos = {}
       @debitos = {}
       @fechamento = nil
     end
 
+    def nome
+      NOMES[@numero-1]
+    end
+
+    def <=>(mes)
+      @numero <=> mes.numero
+    end
+
     def clone
-      clone = super
-      clone.financeiro = @financeiro.clone
+      financeiro = @financeiro.clone
       creditos = {}
       @creditos.each_pair do |nome, credito|
         creditos[nome] = credito.clone
       end
-      clone.creditos = creditos
 
       debitos = {}
       @debitos.each_pair do |nome, debito_pair|
         debitos[nome] = [debito_pair[0], debito_pair[1].clone]
       end
-      clone.debitos = debitos
 
-      return clone
+      Mes.new(financeiro, @numero, creditos, debitos, @fechamento)
     end
 
     def aplicar_creditos_e_debitos

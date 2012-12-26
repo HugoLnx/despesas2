@@ -1,3 +1,5 @@
 require './lib/despesas2/temporizacao/tempo'
 require './lib/despesas2/temporizacao/ano'
 require './lib/despesas2/temporizacao/mes'
+require './lib/despesas2/temporizacao/anos'
+require './lib/despesas2/temporizacao/meses'

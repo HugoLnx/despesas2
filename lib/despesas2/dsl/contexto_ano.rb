@@ -1,6 +1,6 @@
 module DSL
   class ContextoAno
-    def initialize(ano, ignorar_mes=lambda{|nome| return false})
+    def initialize(ano, ignorar_mes=lambda{|mes, ano| return false})
       @ano = ano
       @ignorar_mes = ignorar_mes
     end
@@ -9,12 +9,12 @@ module DSL
       self.instance_eval &block
     end
     
-    Temporizacao::Ano::MESES.each do |nome|
+    Temporizacao::Mes::NOMES.each.with_index do |nome, numero|
       define_method nome do |fechou=nil, &block|
-        return if @ignorar_mes.call(nome)
-        mes = Temporizacao::Mes.new @ano.financeiro.clone
+        mes = Temporizacao::Mes.new(@ano.financeiro.clone, numero)
+        return if @ignorar_mes.call(mes, @ano)
         mes.fechamento = fechou[:fechou] unless fechou.nil?
-        @ano.meses[nome] = mes
+        @ano.meses << mes
 
         mes.financeiro.debitos_mensais_como_nao_pagos
         contexto = ContextoMes.new(mes)

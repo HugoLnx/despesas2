@@ -1,6 +1,6 @@
-<% tempo.anos.each do |ano_nome, ano| %>
+<% tempo.anos.each do |ano| %>
 <div class="ano">
-  <h2><%= ano_nome %></h2>
+  <h2><%= ano.numero %></h2>
 	<%= partial :meses, :locals => {:meses => ano.meses} %>
 </div>
 <% end %>

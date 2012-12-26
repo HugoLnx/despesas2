@@ -1,24 +1,23 @@
 # encoding: utf-8
 module Temporizacao
   class Ano
-    attr_accessor :meses, :financeiro
+    include Comparable
+    attr_accessor :meses, :financeiro, :numero
 
-    MESES = %w{janeiro fevereiro março abril maio junho julho agosto setembro outubro novembro dezembro}.map(&:to_sym)
-    
-    def initialize(financeiro)
+    def initialize(financeiro, numero, meses=Meses.new)
       @financeiro = financeiro
-      @meses = {}
+      @numero = numero
+      @meses = meses
+    end
+
+    def <=>(ano)
+      @numero <=> ano.numero
     end
 
     def clone
-      clone = super
-      clone.financeiro = @financeiro.clone
-      clone_meses = {}
-      @meses.each_pair do |nome, mes|
-        clone_meses[nome] = mes.clone
-      end
-      clone.meses = clone_meses
-      return clone
+      financeiro = @financeiro.clone
+      meses = @meses.clone
+      Ano.new(financeiro, @numero, meses)
     end
   end
 end

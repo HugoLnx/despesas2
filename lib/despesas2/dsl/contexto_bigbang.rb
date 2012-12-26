@@ -9,8 +9,8 @@ module DSL
     end
 
     def ano(num, &block)
-      ano = Temporizacao::Ano.new @tempo.financeiro.clone
-      @tempo.anos[num] = ano
+      ano = Temporizacao::Ano.new @tempo.financeiro.clone, num
+      @tempo.anos << ano
 
       contexto = ContextoAno.new(ano)
       contexto.eval &block
