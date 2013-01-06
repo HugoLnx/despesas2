@@ -23,3 +23,23 @@ module Temporizacao
     end
   end
 end
+
+module Monetizacao
+  FactoryGirl.define do
+    factory :subdivisao, class: Subdivisao do
+      ignore do
+        nome :cofre
+      end
+
+      initialize_with{ new(nome) }
+    end
+
+    factory :subdivisoes, class: Subdivisoes do
+      ignore do
+        subdivisoes []
+      end
+
+      initialize_with{ new(subdivisoes) }
+    end
+  end
+end
