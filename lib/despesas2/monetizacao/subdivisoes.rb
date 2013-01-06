@@ -19,7 +19,8 @@ module Monetizacao
     end
 
     def delete(nome)
-      @subdivisoes.delete_if{|subdivisao| subdivisao.nome == nome}
+      isub = @subdivisoes.index{|subdivisao| subdivisao.nome == nome}
+      @subdivisoes.delete_at isub
     end
   end
 end

@@ -7,7 +7,7 @@ module Temporizacao
       @meses = meses.sort
     end
 
-    def_delegators :@meses, :delete_at, :empty?, :each, :last
+    def_delegators :@meses, :delete_at, :empty?, :each, :last, :at
 
     def push(mes)
       @meses.push(mes)

@@ -11,8 +11,8 @@ module DSL
     end
 
     def nova_subdivisao(nome)
-      subdivisao = Monetizacao::Subdivisao.new
-      @financeiro.subdivisoes[nome] = subdivisao
+      subdivisao = Monetizacao::Subdivisao.new(nome)
+      @financeiro.subdivisoes << subdivisao
     end
 
     def apagar_subdivisao(nome)

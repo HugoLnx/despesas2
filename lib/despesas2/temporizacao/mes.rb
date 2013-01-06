@@ -49,17 +49,17 @@ module Temporizacao
       saldo = credito
       saldo -= debito
 
-      @financeiro.subdivisoes.each do |nome, subdivisao|
+      @financeiro.subdivisoes.each do |subdivisao|
         padrao = Monetizacao::Debito.calcular(subdivisao.padrao, credito)
         saldo -= padrao
 
         subdivisao.valor += padrao
-        subdivisao.valor += soma_creditos(nome)
-        subdivisao.valor -= soma_debitos(nome, credito, subdivisao)
+        subdivisao.valor += soma_creditos(subdivisao.nome)
+        subdivisao.valor -= soma_debitos(subdivisao.nome, credito, subdivisao)
       end
 
       nome = @financeiro.subdivisao_principal
-      principal = @financeiro.subdivisoes[nome]
+      principal = @financeiro.principal
       if @fechamento.nil?
         principal.valor += saldo
       else
@@ -88,14 +88,14 @@ module Temporizacao
     end
 
     def debito_total
-      nomes = @financeiro.subdivisoes.map{|nome, _| nome}
-      nomes.delete(:resto)
+      nomes = @financeiro.subdivisoes.map(&:nome)
+      nomes.delete(@financeiro.subdivisao_principal)
       nomes.map{|nome| total_credito(nome)}.inject(:+)
     end
 
     def debitos_pendentes
       debitos = @financeiro.debitos_mensais.to_a
-      debitos += @financeiro.subdivisoes.inject([]){|debitos, (_, sub)| debitos + sub.debitos_mensais.to_a}
+      debitos += @financeiro.subdivisoes.inject([]){|debitos, sub| debitos + sub.debitos_mensais.to_a}
 
       debitos = debitos.find_all{|(_, debito)| !debito.pago?}
 

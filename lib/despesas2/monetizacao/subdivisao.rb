@@ -17,15 +17,14 @@ module Monetizacao
     end
 
     def clone
-      clone = super
-
-      clone_debitos = {}
+      debitos = {}
       @debitos_mensais.each do |desc, debito|
-        clone_debitos[desc] = debito.clone
+        debitos[desc] = debito.clone
       end
-      clone.debitos_mensais = clone_debitos
 
-      return clone
+      nome = @nome.is_a?(Symbol) ? @nome : @nome.clone
+
+      Subdivisao.new(nome, @padrao, @valor, debitos)
     end
 
     def depositar(valor)

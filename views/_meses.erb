@@ -25,14 +25,14 @@
 				} %>
 			</li>
 
-			<% mes.financeiro.subdivisoes.each do |nome, subdivisao| %>
-				<% if nome != :resto %>
+			<% mes.financeiro.subdivisoes.each do |subdivisao| %>
+				<% if subdivisao.nome != mes.financeiro.subdivisao_principal %>
 					<li class="subdivisao">
 						<%= partial :subdivisao, :locals => {
-							nome: nome,
+							nome: subdivisao.nome,
 							valor: subdivisao.valor,
-							credito: mes.total_credito(nome),
-							debito: mes.total_debito(nome)
+							credito: mes.total_credito(subdivisao.nome),
+							debito: mes.total_debito(subdivisao.nome)
 						} %>
 					</li>
 			  <% end %>

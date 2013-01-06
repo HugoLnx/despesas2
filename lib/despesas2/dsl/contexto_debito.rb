@@ -17,11 +17,11 @@ module DSL
     def contexto
       financeiro = @mes.financeiro
       mes = @mes
-      subdivisoes = financeiro.subdivisoes.keys
-      subdivisoes << :total
+      nomes = financeiro.subdivisoes.map(&:nome)
+      nomes << :total
 
       return Contexto.new do
-        subdivisoes.each do |nome|
+        nomes.each do |nome|
           define_method nome do |hash|
             desc = hash.keys.first
             valor = hash.values.first
@@ -58,8 +58,8 @@ module DSL
         define_method :mensal_pago do |nome|
           debito = financeiro.debitos_mensais[nome]
 
-          subdivisao_pair = financeiro.subdivisoes.find{|_,sub| sub.debitos_mensais[nome]}
-          debito ||= subdivisao_pair && subdivisao_pair.last.debitos_mensais[nome]
+          subdivisao = financeiro.subdivisoes.find{|sub| sub.debitos_mensais[nome]}
+          debito ||= subdivisao && subdivisao.debitos_mensais[nome]
 
           debito && debito.pago = true
         end

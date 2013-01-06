@@ -17,11 +17,11 @@ module DSL
     def contexto
       financeiro = @mes.financeiro
       mes = @mes
-      subdivisoes = financeiro.subdivisoes.keys
-      subdivisoes << :total
+      nomes = financeiro.subdivisoes.map(&:nome)
+      nomes << :total
 
       return Contexto.new do
-        subdivisoes.each do |nome|
+        nomes.each do |nome|
           define_method nome do |hash|
             desc = hash.keys.first
             valor = hash.values.first
