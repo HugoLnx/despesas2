@@ -148,4 +148,78 @@ describe "subdivisoes" do
       ano.meses[:fevereiro].financeiro.subdivisoes[:cofre].valor.should == 30.0
     end
   end
+
+  describe "apagar subdivisao" do
+    context "sem debitos mensais" do
+      bigbang do
+        ano 2012 do
+          janeiro do
+            organizacao do
+              nova_subdivisao :resto
+              subdivisao_principal :resto
+
+              nova_subdivisao :cofre
+            end
+        
+            credito do
+              cofre "cofre inicial" => 2000.0
+            end
+          end
+
+          fevereiro do
+            organizacao do
+              apagar_subdivisao :cofre
+            end
+          end
+        end
+      end
+
+      it "não será possível recuperar a subdivisao mais" do
+        subject.financeiro.subdivisoes[:cofre].should be_nil
+      end
+
+      it "todo o dinheiro da subdivisao é transferido para o total" do
+        subject.financeiro.principal.valor.should == 2000.0
+      end
+    end
+
+    context "com debitos mensais" do
+      bigbang do
+        ano 2012 do
+          janeiro do
+            organizacao do
+              nova_subdivisao :resto
+              subdivisao_principal :resto
+
+              nova_subdivisao :cofre
+            end
+        
+            credito do
+              cofre "cofre inicial" => 2000.0
+            end
+
+            debito do
+              mensal "prestação", cofre: 500.0
+            end
+          end
+
+          fevereiro do
+            organizacao do
+              apagar_subdivisao :cofre
+            end
+          end
+
+          março do
+          end
+        end
+      end
+
+      it "o debito mensal é cancelado" do
+        ano = subject.anos[2012]
+        ano.meses[:janeiro].debitos_pendentes.map(&:first).should include "prestação"
+        ano.meses[:fevereiro].debitos_pendentes.map(&:first).should_not include "prestação"
+        ano.meses[:março].debitos_pendentes.map(&:first).should_not include "prestação"
+      end
+    end
+  end
 end

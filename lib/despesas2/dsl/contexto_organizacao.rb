@@ -15,6 +15,11 @@ module DSL
       @financeiro.subdivisoes[nome] = subdivisao
     end
 
+    def apagar_subdivisao(nome)
+      subdivisao = @financeiro.subdivisoes.delete(nome)
+      @financeiro.principal.valor += subdivisao.valor
+    end
+
     def padrao(hash)
       nome = hash.keys.first
       valor = hash.values.first
