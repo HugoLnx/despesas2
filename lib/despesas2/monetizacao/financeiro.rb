@@ -15,7 +15,7 @@ module Monetizacao
     end
 
     def saldo_sem_resto
-      subs = @subdivisoes.select{|nome, sub| nome != @subdivisao_principal}
+      subs = @subdivisoes.select{|sub| sub.nome != @subdivisao_principal}
       return subs.map(&:valor).inject(&:+)
     end
 
