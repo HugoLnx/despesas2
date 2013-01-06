@@ -1,10 +1,13 @@
 module Temporizacao
   class Meses
+    extend Forwardable
     include Enumerable
 
     def initialize(meses=[])
       @meses = meses.sort
     end
+
+    def_delegators :@meses, :delete_at, :empty?, :each, :last
 
     def push(mes)
       @meses.push(mes)
@@ -25,26 +28,6 @@ module Temporizacao
         nome = numero_ou_nome
         @meses.find{|mes| mes.nome == nome}
       end
-    end
-
-    def at(i)
-      @meses[i]
-    end
-
-    def delete_at(i)
-      @meses.delete_at(i)
-    end
-
-    def empty?
-      @meses.empty?
-    end
-
-    def each(&block)
-      @meses.each(&block)
-    end
-
-    def last(*args)
-      @meses.last(*args)
     end
   end
 end

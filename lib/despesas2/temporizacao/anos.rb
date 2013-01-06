@@ -1,5 +1,6 @@
 module Temporizacao
   class Anos
+    extend Forwardable
     include Enumerable
 
     def initialize(anos=[])
@@ -21,24 +22,6 @@ module Temporizacao
       @anos.find{|ano| ano.numero == numero}
     end
 
-    def at(i)
-      @anos[i]
-    end
-
-    def delete_at(i)
-      @anos.delete_at(i)
-    end
-
-    def empty?
-      @anos.empty?
-    end
-
-    def each(&block)
-      @anos.each(&block)
-    end
-
-    def last(*args)
-      @anos.last(*args)
-    end
+    def_delegators :@anos, :at, :delete_at, :empty?, :each, :last
   end
 end
