@@ -3,11 +3,11 @@ bigbang do
   ano 2012 do
     julho fechou: 5000.0 do
       organizacao do
-        nova_subdivisao :resto
-        subdivisao_principal :resto
+        nova_conta :resto
+        conta_principal :resto
   
-        nova_subdivisao :cofre
-        nova_subdivisao :doacoes
+        nova_conta :cofre
+        nova_conta :doacoes
       end
   
       credito do
@@ -17,7 +17,7 @@ bigbang do
   
     agosto do
       organizacao do
-        novas_subdivisoes(
+        novas_contas(
           :saude, :presentes,
           :roupas, :lazer,
           :aposentadoria

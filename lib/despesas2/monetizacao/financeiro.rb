@@ -6,6 +6,9 @@ module Monetizacao
     attr_accessor :debitos_mensais
     attr_accessor :emprestimos
 
+    alias :contas :subdivisoes
+    alias :conta_principal :subdivisao_principal
+
     def initialize(subdivisoes=Subdivisoes.new, subdivisao_principal=nil, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
       @subdivisoes = subdivisoes
       @subdivisao_principal = subdivisao_principal

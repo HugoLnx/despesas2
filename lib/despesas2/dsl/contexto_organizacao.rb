@@ -10,12 +10,12 @@ module DSL
       self.instance_eval &block
     end
 
-    def nova_subdivisao(nome)
+    def nova_conta(nome)
       subdivisao = Monetizacao::Subdivisao.new(nome)
       @financeiro.subdivisoes << subdivisao
     end
 
-    def apagar_subdivisao(nome)
+    def apagar_conta(nome)
       subdivisao = @financeiro.subdivisoes.delete(nome)
       @financeiro.principal.valor += subdivisao.valor
     end
@@ -27,9 +27,9 @@ module DSL
       @financeiro.subdivisoes[nome].padrao = valor
     end
 
-    def novas_subdivisoes(*nomes)
+    def novas_contas(*nomes)
       nomes.each do |nome|
-        nova_subdivisao nome
+        nova_conta nome
       end
     end
 
@@ -39,7 +39,7 @@ module DSL
       end
     end
 
-    def subdivisao_principal(nome)
+    def conta_principal(nome)
       @financeiro.subdivisao_principal = nome
     end
   end

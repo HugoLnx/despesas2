@@ -1,16 +1,16 @@
 # encoding: utf-8
 require 'spec_helper'
 
-describe "subdivisoes" do
+describe "contas" do
   describe "operações básicas" do
     bigbang do
       ano 2012 do
         janeiro do
           organizacao do
-            nova_subdivisao :resto
-            subdivisao_principal :resto
+            nova_conta :resto
+            conta_principal :resto
 
-            nova_subdivisao :cofre
+            nova_conta :cofre
           end
       
           credito do
@@ -25,20 +25,20 @@ describe "subdivisoes" do
     end
 
     it "crédito e débito unitário" do
-      subject.financeiro.subdivisoes[:cofre].valor.should == 1500.0
+      subject.financeiro.contas[:cofre].valor.should == 1500.0
     end
   end
 
-  describe "subdivisao principal" do
+  describe "conta principal" do
     context "em mes fechado" do
       bigbang do
         ano 2012 do
           janeiro fechou: 5000.0 do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
         
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
         
             credito do
@@ -54,8 +54,8 @@ describe "subdivisoes" do
 
       it %q{considera o valor fechado como o total do momento,
             então diminui-se os debitos e o que sobrou será o valor
-            da subdivisão principal} do
-        subject.financeiro.subdivisoes[:resto].valor.should == 3000.0
+            da conta principal} do
+        subject.financeiro.contas[:resto].valor.should == 3000.0
       end
     end
 
@@ -65,10 +65,10 @@ describe "subdivisoes" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
         
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
         
             credito do
@@ -84,7 +84,7 @@ describe "subdivisoes" do
 
       it 'o resto será o que foi creditado menos o que foi debitado' do
         pending "falhando, por enquanto"
-        subject.financeiro.subdivisoes[:resto].valor.should == 800.0
+        subject.financeiro.contas[:resto].valor.should == 800.0
       end
     end
   end
@@ -94,10 +94,10 @@ describe "subdivisoes" do
       ano 2012 do
         janeiro do
           organizacao do
-            nova_subdivisao :resto
-            subdivisao_principal :resto
+            nova_conta :resto
+            conta_principal :resto
       
-            nova_subdivisao :cofre
+            nova_conta :cofre
 
             padrao cofre: 1000.0
           end
@@ -110,8 +110,8 @@ describe "subdivisoes" do
 
     it "credita todo mês" do
       ano = subject.anos[2012]
-      ano.meses[:janeiro].financeiro.subdivisoes[:cofre].valor.should == 1000.0
-      ano.meses[:fevereiro].financeiro.subdivisoes[:cofre].valor.should == 2000.0
+      ano.meses[:janeiro].financeiro.contas[:cofre].valor.should == 1000.0
+      ano.meses[:fevereiro].financeiro.contas[:cofre].valor.should == 2000.0
     end
   end
 
@@ -121,10 +121,10 @@ describe "subdivisoes" do
       ano 2012 do
         janeiro do
           organizacao do
-            nova_subdivisao :resto
-            subdivisao_principal :resto
+            nova_conta :resto
+            conta_principal :resto
       
-            nova_subdivisao :cofre
+            nova_conta :cofre
 
             padrao cofre: "10%"
           end
@@ -144,21 +144,21 @@ describe "subdivisoes" do
 
     it "calcula a porcentagem baseada no total creditado do mês" do
       ano = subject.anos[2012]
-      ano.meses[:janeiro].financeiro.subdivisoes[:cofre].valor.should == 10.0
-      ano.meses[:fevereiro].financeiro.subdivisoes[:cofre].valor.should == 30.0
+      ano.meses[:janeiro].financeiro.contas[:cofre].valor.should == 10.0
+      ano.meses[:fevereiro].financeiro.contas[:cofre].valor.should == 30.0
     end
   end
 
-  describe "apagar subdivisao" do
+  describe "apagar conta" do
     context "sem debitos mensais" do
       bigbang do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
 
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
         
             credito do
@@ -168,17 +168,17 @@ describe "subdivisoes" do
 
           fevereiro do
             organizacao do
-              apagar_subdivisao :cofre
+              apagar_conta :cofre
             end
           end
         end
       end
 
-      it "não será possível recuperar a subdivisao mais" do
-        subject.financeiro.subdivisoes[:cofre].should be_nil
+      it "não será possível recuperar a conta mais" do
+        subject.financeiro.contas[:cofre].should be_nil
       end
 
-      it "todo o dinheiro da subdivisao é transferido para o total" do
+      it "todo o dinheiro da conta é transferido para o total" do
         subject.financeiro.principal.valor.should == 2000.0
       end
     end
@@ -188,10 +188,10 @@ describe "subdivisoes" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
 
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
         
             credito do
@@ -205,7 +205,7 @@ describe "subdivisoes" do
 
           fevereiro do
             organizacao do
-              apagar_subdivisao :cofre
+              apagar_conta :cofre
             end
           end
 

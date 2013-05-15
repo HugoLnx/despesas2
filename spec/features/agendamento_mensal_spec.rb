@@ -2,16 +2,16 @@
 require 'spec_helper'
 
 describe "agendamento mensal" do
-  context "em uma subdivisao" do
+  context "em uma conta" do
     context "débito" do
       bigbang do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
 
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
         
             credito do
@@ -31,8 +31,8 @@ describe "agendamento mensal" do
 
       it "debita todo mês" do
         ano = subject.anos[2012]
-        ano.meses[:janeiro].financeiro.subdivisoes[:cofre].valor.should == 4000.0
-        ano.meses[:fevereiro].financeiro.subdivisoes[:cofre].valor.should == 3000.0
+        ano.meses[:janeiro].financeiro.contas[:cofre].valor.should == 4000.0
+        ano.meses[:fevereiro].financeiro.contas[:cofre].valor.should == 3000.0
       end
 
       it 'pode-se marcar como pago' do
@@ -55,10 +55,10 @@ describe "agendamento mensal" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
 
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
         
             credito do
@@ -73,8 +73,8 @@ describe "agendamento mensal" do
 
       it "credita todo mês" do
         ano = subject.anos[2012]
-        ano.meses[:janeiro].financeiro.subdivisoes[:resto].valor.should == 2000.0
-        ano.meses[:fevereiro].financeiro.subdivisoes[:resto].valor.should == 4000.0
+        ano.meses[:janeiro].financeiro.contas[:resto].valor.should == 2000.0
+        ano.meses[:fevereiro].financeiro.contas[:resto].valor.should == 4000.0
       end
     end
 
@@ -83,10 +83,10 @@ describe "agendamento mensal" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_subdivisao :resto
-              subdivisao_principal :resto
+              nova_conta :resto
+              conta_principal :resto
 
-              nova_subdivisao :cofre
+              nova_conta :cofre
             end
 
             credito do
@@ -106,8 +106,8 @@ describe "agendamento mensal" do
 
       it "debita todo mês" do
         ano = subject.anos[2012]
-        ano.meses[:janeiro].financeiro.subdivisoes[:resto].valor.should == 4000.0
-        ano.meses[:fevereiro].financeiro.subdivisoes[:resto].valor.should == 3000.0
+        ano.meses[:janeiro].financeiro.contas[:resto].valor.should == 4000.0
+        ano.meses[:fevereiro].financeiro.contas[:resto].valor.should == 3000.0
       end
 
       it 'pode-se marcar como pago' do
