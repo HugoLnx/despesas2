@@ -7,9 +7,6 @@ describe "contas" do
       ano 2012 do
         janeiro do
           organizacao do
-            nova_conta :resto
-            conta_principal :resto
-
             nova_conta :cofre
           end
       
@@ -35,9 +32,6 @@ describe "contas" do
         ano 2012 do
           janeiro fechou: 5000.0 do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-        
               nova_conta :cofre
             end
         
@@ -65,9 +59,6 @@ describe "contas" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-        
               nova_conta :cofre
             end
         
@@ -94,9 +85,6 @@ describe "contas" do
       ano 2012 do
         janeiro do
           organizacao do
-            nova_conta :resto
-            conta_principal :resto
-      
             nova_conta :cofre
 
             padrao cofre: 1000.0
@@ -121,9 +109,6 @@ describe "contas" do
       ano 2012 do
         janeiro do
           organizacao do
-            nova_conta :resto
-            conta_principal :resto
-      
             nova_conta :cofre
 
             padrao cofre: "10%"
@@ -155,9 +140,6 @@ describe "contas" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-
               nova_conta :cofre
             end
         
@@ -188,9 +170,6 @@ describe "contas" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-
               nova_conta :cofre
             end
         

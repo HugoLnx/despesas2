@@ -58,7 +58,6 @@ module Temporizacao
         conta.valor -= soma_debitos(conta.nome, credito, conta)
       end
 
-      nome = @financeiro.conta_principal
       principal = @financeiro.principal
       if @fechamento.nil?
         principal.valor += saldo
@@ -89,7 +88,7 @@ module Temporizacao
 
     def debito_total
       nomes = @financeiro.contas.map(&:nome)
-      nomes.delete(@financeiro.conta_principal)
+      nomes.delete(@financeiro.principal.nome)
       nomes.map{|nome| total_credito(nome)}.inject(:+)
     end
 

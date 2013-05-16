@@ -26,7 +26,7 @@
 			</li>
 
 			<% mes.financeiro.contas.each do |conta| %>
-				<% if conta.nome != mes.financeiro.conta_principal %>
+				<% if conta.nome != mes.financeiro.principal.nome %>
 					<li class="conta">
 						<%= partial :conta, :locals => {
 							nome: conta.nome,

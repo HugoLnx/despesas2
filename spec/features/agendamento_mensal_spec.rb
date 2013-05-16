@@ -8,9 +8,6 @@ describe "agendamento mensal" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-
               nova_conta :cofre
             end
         
@@ -55,9 +52,6 @@ describe "agendamento mensal" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-
               nova_conta :cofre
             end
         
@@ -83,9 +77,6 @@ describe "agendamento mensal" do
         ano 2012 do
           janeiro do
             organizacao do
-              nova_conta :resto
-              conta_principal :resto
-
               nova_conta :cofre
             end
 

@@ -1,21 +1,22 @@
 module Monetizacao
   class Financeiro
     attr_accessor :contas
-    attr_accessor :conta_principal
     attr_accessor :creditos_mensais
     attr_accessor :debitos_mensais
     attr_accessor :emprestimos
 
-    def initialize(contas=Contas.new, conta_principal=nil, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
+    NOME_CONTA_PRINCIPAL = :resto
+
+    def initialize(contas=Contas.new, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
       @contas = contas
-      @conta_principal = conta_principal
+      @contas << Conta.new(NOME_CONTA_PRINCIPAL)
       @creditos_mensais = creditos_mensais
       @debitos_mensais = debitos_mensais
       @emprestimos = emprestimos
     end
 
     def saldo_sem_resto
-      contas = @contas.select{|conta| conta.nome != @conta_principal}
+      contas = @contas.select{|conta| conta.nome != NOME_CONTA_PRINCIPAL}
       return contas.map(&:valor).inject(&:+)
     end
 
@@ -33,7 +34,7 @@ module Monetizacao
     end
 
     def principal
-      @contas[@conta_principal]
+      @contas[NOME_CONTA_PRINCIPAL]
     end
 
     def clone
@@ -46,7 +47,7 @@ module Monetizacao
 
       creditos = @creditos_mensais.clone
       emprestimos = @emprestimos.clone
-      return Financeiro.new(contas, @conta_principal, creditos, debitos, emprestimos)
+      return Financeiro.new(contas, creditos, debitos, emprestimos)
     end
   end
 end

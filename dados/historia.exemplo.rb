@@ -3,9 +3,6 @@ bigbang do
   ano 2012 do
     julho fechou: 5000.0 do
       organizacao do
-        nova_conta :resto
-        conta_principal :resto
-  
         nova_conta :cofre
         nova_conta :doacoes
       end

@@ -38,9 +38,5 @@ module DSL
         padrao(chave => valor)
       end
     end
-
-    def conta_principal(nome)
-      @financeiro.conta_principal = nome
-    end
   end
 end
