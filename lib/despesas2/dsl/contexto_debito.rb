@@ -58,7 +58,7 @@ module DSL
         define_method :mensal_pago do |nome|
           debito = financeiro.debitos_mensais[nome]
 
-          conta = financeiro.contas.find{|sub| sub.debitos_mensais[nome]}
+          conta = financeiro.contas.find{|conta| conta.debitos_mensais[nome]}
           debito ||= conta && conta.debitos_mensais[nome]
 
           debito && debito.pago = true

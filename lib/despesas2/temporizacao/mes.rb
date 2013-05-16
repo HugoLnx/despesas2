@@ -95,7 +95,7 @@ module Temporizacao
 
     def debitos_pendentes
       debitos = @financeiro.debitos_mensais.to_a
-      debitos += @financeiro.contas.inject([]){|debitos, sub| debitos + sub.debitos_mensais.to_a}
+      debitos += @financeiro.contas.inject([]){|debitos, conta| debitos + conta.debitos_mensais.to_a}
 
       debitos = debitos.find_all{|(_, debito)| !debito.pago?}
 
@@ -127,8 +127,8 @@ module Temporizacao
         mensais = conta.debitos_mensais
       end
       debitos += mensais.values.map{|debito| [nome, debito.valor]}
-      debitos = debitos.map{|(sub,valor)| [sub, Monetizacao::Debito.calcular(valor, credito)]}
-      debitos = debitos.select{|(sub,val)| sub == nome}
+      debitos = debitos.map{|(conta,valor)| [conta, Monetizacao::Debito.calcular(valor, credito)]}
+      debitos = debitos.select{|(conta,val)| conta == nome}
       return debitos.map(&:last).inject(0.0, &:+)
     end
   end

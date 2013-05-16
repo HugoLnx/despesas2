@@ -15,8 +15,8 @@ module Monetizacao
     end
 
     def saldo_sem_resto
-      subs = @contas.select{|sub| sub.nome != @conta_principal}
-      return subs.map(&:valor).inject(&:+)
+      contas = @contas.select{|conta| conta.nome != @conta_principal}
+      return contas.map(&:valor).inject(&:+)
     end
 
     def each_emprestimo(&block)

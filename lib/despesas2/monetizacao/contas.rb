@@ -19,8 +19,8 @@ module Monetizacao
     end
 
     def delete(nome)
-      isub = @contas.index{|conta| conta.nome == nome}
-      @contas.delete_at isub
+      i = @contas.index{|conta| conta.nome == nome}
+      @contas.delete_at i
     end
   end
 end
