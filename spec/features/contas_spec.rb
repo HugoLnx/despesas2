@@ -49,7 +49,7 @@ describe "contas" do
       it %q{considera o valor fechado como o total do momento,
             então diminui-se os debitos e o que sobrou será o valor
             da conta principal} do
-        subject.financeiro.contas[:resto].valor.should == 3000.0
+        subject.financeiro.principal.valor.should == 3000.0
       end
     end
 
@@ -73,9 +73,9 @@ describe "contas" do
         end
       end
 
-      it 'o resto será o que foi creditado menos o que foi debitado' do
+      it 'a conta principal terá o que foi creditado menos o que foi debitado' do
         pending "falhando, por enquanto"
-        subject.financeiro.contas[:resto].valor.should == 800.0
+        subject.financeiro.principal.valor.should == 800.0
       end
     end
   end

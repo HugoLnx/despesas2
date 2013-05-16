@@ -19,7 +19,7 @@
     <% end %>
 		<ul class="contas">
       <li class="conta">
-				<%= partial :conta_resto, :locals => {
+				<%= partial :conta_principal, :locals => {
 					atual: mes,
 					anterior: mes_i.zero? ? nil : meses.at(mes_i-1)
 				} %>

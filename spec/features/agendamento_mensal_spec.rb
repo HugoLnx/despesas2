@@ -67,8 +67,8 @@ describe "agendamento mensal" do
 
       it "credita todo mês" do
         ano = subject.anos[2012]
-        ano.meses[:janeiro].financeiro.contas[:resto].valor.should == 2000.0
-        ano.meses[:fevereiro].financeiro.contas[:resto].valor.should == 4000.0
+        ano.meses[:janeiro].financeiro.principal.valor.should == 2000.0
+        ano.meses[:fevereiro].financeiro.principal.valor.should == 4000.0
       end
     end
 
@@ -97,8 +97,8 @@ describe "agendamento mensal" do
 
       it "debita todo mês" do
         ano = subject.anos[2012]
-        ano.meses[:janeiro].financeiro.contas[:resto].valor.should == 4000.0
-        ano.meses[:fevereiro].financeiro.contas[:resto].valor.should == 3000.0
+        ano.meses[:janeiro].financeiro.principal.valor.should == 4000.0
+        ano.meses[:fevereiro].financeiro.principal.valor.should == 3000.0
       end
 
       it 'pode-se marcar como pago' do

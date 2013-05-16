@@ -5,7 +5,7 @@ module Monetizacao
     attr_accessor :debitos_mensais
     attr_accessor :emprestimos
 
-    NOME_CONTA_PRINCIPAL = :resto
+    NOME_CONTA_PRINCIPAL = :principal
 
     def initialize(contas=Contas.new, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
       @contas = contas

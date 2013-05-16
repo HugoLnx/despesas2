@@ -1,12 +1,12 @@
-<% conta = atual.financeiro.contas[:resto] %>
+<% conta = atual.financeiro.principal %>
 <% if anterior %>
-  <% conta_anterior = anterior.financeiro.contas[:resto] %>
+  <% conta_anterior = anterior.financeiro.principal %>
   <% diff = conta.valor - conta_anterior.valor %>
 <% else %>
   <% diff = conta.valor %>
 <% end %>
 <ul class="conta <%= class_lucro(diff) %>">
-	<li class="nome"><%= :resto %></li>
+	<li class="nome"><%= Monetizacao::Financeiro::NOME_CONTA_PRINCIPAL %></li>
 	<li class="valor"><%= dinheiro conta.valor %></li>
   <% if diff < 0 %>
     <li class="debito"><%= dinheiro diff.abs %></li>
