@@ -7,23 +7,23 @@ module Monetizacao
       cofre = build(:conta, nome: :cofre)
       doacoes = build(:conta, nome: :doacoes)
 
-      subdivisoes = build(:contas)
+      contas = build(:contas)
 
-      subdivisoes << cofre
-      subdivisoes << doacoes
+      contas << cofre
+      contas << doacoes
 
-      subdivisoes[:cofre].should == cofre
-      subdivisoes[:doacoes].should == doacoes
+      contas[:cofre].should == cofre
+      contas[:doacoes].should == doacoes
     end
 
     it 'coleção' do
       cofre = build(:conta, nome: :cofre)
       doacoes = build(:conta, nome: :doacoes)
 
-      subdivisoes = build(:contas, subdivisoes: [cofre, doacoes])
+      contas = build(:contas, contas: [cofre, doacoes])
 
-      subdivisoes.each do |subdivisao|
-        [cofre, doacoes].should include subdivisao
+      contas.each do |contas|
+        [cofre, doacoes].should include contas
       end
     end
   end

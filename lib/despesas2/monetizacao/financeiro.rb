@@ -1,24 +1,21 @@
 module Monetizacao
   class Financeiro
-    attr_accessor :subdivisoes
-    attr_accessor :subdivisao_principal
+    attr_accessor :contas
+    attr_accessor :conta_principal
     attr_accessor :creditos_mensais
     attr_accessor :debitos_mensais
     attr_accessor :emprestimos
 
-    alias :contas :subdivisoes
-    alias :conta_principal :subdivisao_principal
-
-    def initialize(subdivisoes=Contas.new, subdivisao_principal=nil, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
-      @subdivisoes = subdivisoes
-      @subdivisao_principal = subdivisao_principal
+    def initialize(contas=Contas.new, conta_principal=nil, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
+      @contas = contas
+      @conta_principal = conta_principal
       @creditos_mensais = creditos_mensais
       @debitos_mensais = debitos_mensais
       @emprestimos = emprestimos
     end
 
     def saldo_sem_resto
-      subs = @subdivisoes.select{|sub| sub.nome != @subdivisao_principal}
+      subs = @contas.select{|sub| sub.nome != @conta_principal}
       return subs.map(&:valor).inject(&:+)
     end
 
@@ -32,15 +29,15 @@ module Monetizacao
         debito.pago = false
       end
 
-      @subdivisoes.each(&:debitos_mensais_como_nao_pagos)
+      @contas.each(&:debitos_mensais_como_nao_pagos)
     end
 
     def principal
-      @subdivisoes[@subdivisao_principal]
+      @contas[@conta_principal]
     end
 
     def clone
-      subdivisoes = @subdivisoes.clone
+      contas = @contas.clone
 
       debitos = {}
       @debitos_mensais.each do |desc, debito|
@@ -49,7 +46,7 @@ module Monetizacao
 
       creditos = @creditos_mensais.clone
       emprestimos = @emprestimos.clone
-      return Financeiro.new(subdivisoes, @subdivisao_principal, creditos, debitos, emprestimos)
+      return Financeiro.new(contas, @conta_principal, creditos, debitos, emprestimos)
     end
   end
 end

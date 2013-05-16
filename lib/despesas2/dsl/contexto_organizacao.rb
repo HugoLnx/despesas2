@@ -11,20 +11,20 @@ module DSL
     end
 
     def nova_conta(nome)
-      subdivisao = Monetizacao::Conta.new(nome)
-      @financeiro.subdivisoes << subdivisao
+      conta = Monetizacao::Conta.new(nome)
+      @financeiro.contas << conta
     end
 
     def apagar_conta(nome)
-      subdivisao = @financeiro.subdivisoes.delete(nome)
-      @financeiro.principal.valor += subdivisao.valor
+      conta = @financeiro.contas.delete(nome)
+      @financeiro.principal.valor += conta.valor
     end
 
     def padrao(hash)
       nome = hash.keys.first
       valor = hash.values.first
 
-      @financeiro.subdivisoes[nome].padrao = valor
+      @financeiro.contas[nome].padrao = valor
     end
 
     def novas_contas(*nomes)
@@ -40,7 +40,7 @@ module DSL
     end
 
     def conta_principal(nome)
-      @financeiro.subdivisao_principal = nome
+      @financeiro.conta_principal = nome
     end
   end
 end

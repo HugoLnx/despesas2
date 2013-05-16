@@ -17,29 +17,29 @@
         </ul>
       </div>
     <% end %>
-		<ul class="subdivisoes">
-      <li class="subdivisao">
-				<%= partial :subdivisao_resto, :locals => {
+		<ul class="contas">
+      <li class="conta">
+				<%= partial :conta_resto, :locals => {
 					atual: mes,
 					anterior: mes_i.zero? ? nil : meses.at(mes_i-1)
 				} %>
 			</li>
 
-			<% mes.financeiro.subdivisoes.each do |subdivisao| %>
-				<% if subdivisao.nome != mes.financeiro.subdivisao_principal %>
-					<li class="subdivisao">
-						<%= partial :subdivisao, :locals => {
-							nome: subdivisao.nome,
-							valor: subdivisao.valor,
-							credito: mes.total_credito(subdivisao.nome),
-							debito: mes.total_debito(subdivisao.nome)
+			<% mes.financeiro.contas.each do |conta| %>
+				<% if conta.nome != mes.financeiro.conta_principal %>
+					<li class="conta">
+						<%= partial :conta, :locals => {
+							nome: conta.nome,
+							valor: conta.valor,
+							credito: mes.total_credito(conta.nome),
+							debito: mes.total_debito(conta.nome)
 						} %>
 					</li>
 			  <% end %>
 			<% end %>
 
-      <li class="subdivisao">
-      <%= partial :subdivisao, :locals => {
+      <li class="conta">
+      <%= partial :conta, :locals => {
         nome: "Liquido",
         valor: mes.total_credito(:total) - mes.debito_total,
         credito: mes.total_credito(:total),

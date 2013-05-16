@@ -36,10 +36,10 @@ module Monetizacao
 
     factory :contas, class: Contas do
       ignore do
-        subdivisoes []
+        contas []
       end
 
-      initialize_with{ new(subdivisoes) }
+      initialize_with{ new(contas) }
     end
   end
 end

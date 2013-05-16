@@ -17,7 +17,7 @@ module DSL
     def contexto
       financeiro = @mes.financeiro
       mes = @mes
-      nomes = financeiro.subdivisoes.map(&:nome)
+      nomes = financeiro.contas.map(&:nome)
       nomes << :total
 
       return Contexto.new do

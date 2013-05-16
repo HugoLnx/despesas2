@@ -1,11 +1,11 @@
-<% sub = atual.financeiro.subdivisoes[:resto] %>
+<% sub = atual.financeiro.contas[:resto] %>
 <% if anterior %>
-  <% sub_anterior = anterior.financeiro.subdivisoes[:resto] %>
+  <% sub_anterior = anterior.financeiro.contas[:resto] %>
   <% diff = sub.valor - sub_anterior.valor %>
 <% else %>
   <% diff = sub.valor %>
 <% end %>
-<ul class="subdivisao <%= class_lucro(diff) %>">
+<ul class="conta <%= class_lucro(diff) %>">
 	<li class="nome"><%= :resto %></li>
 	<li class="valor"><%= dinheiro sub.valor %></li>
   <% if diff < 0 %>

@@ -17,7 +17,7 @@ module DSL
     def contexto
       financeiro = @mes.financeiro
       mes = @mes
-      nomes = financeiro.subdivisoes.map(&:nome)
+      nomes = financeiro.contas.map(&:nome)
       nomes << :total
 
       return Contexto.new do
@@ -49,17 +49,17 @@ module DSL
             financeiro.debitos_mensais[nome] = Monetizacao::Debito.new(valor)
           else
             nome = nome_ou_hash
-            subdivisao = hash.keys.first
+            conta = hash.keys.first
             valor = hash.values.first
-            financeiro.subdivisoes[subdivisao].debitos_mensais[nome] = Monetizacao::Debito.new(valor)
+            financeiro.contas[conta].debitos_mensais[nome] = Monetizacao::Debito.new(valor)
           end
         end
 
         define_method :mensal_pago do |nome|
           debito = financeiro.debitos_mensais[nome]
 
-          subdivisao = financeiro.subdivisoes.find{|sub| sub.debitos_mensais[nome]}
-          debito ||= subdivisao && subdivisao.debitos_mensais[nome]
+          conta = financeiro.contas.find{|sub| sub.debitos_mensais[nome]}
+          debito ||= conta && conta.debitos_mensais[nome]
 
           debito && debito.pago = true
         end

@@ -3,24 +3,24 @@ module Monetizacao
     extend Forwardable
     include Enumerable
 
-    def initialize(subdivisoes=[])
-      @subdivisoes = subdivisoes
+    def initialize(contas=[])
+      @contas = contas
     end
 
-    def_delegators :@subdivisoes, :push, :<<, :empty?, :each
+    def_delegators :@contas, :push, :<<, :empty?, :each
 
     def clone
-      subdivisoes = @subdivisoes.map(&:clone)
-      Contas.new(subdivisoes)
+      contas = @contas.map(&:clone)
+      Contas.new(contas)
     end
 
     def [](nome)
-      @subdivisoes.find{|subdivisao| subdivisao.nome == nome}
+      @contas.find{|conta| conta.nome == nome}
     end
 
     def delete(nome)
-      isub = @subdivisoes.index{|subdivisao| subdivisao.nome == nome}
-      @subdivisoes.delete_at isub
+      isub = @contas.index{|conta| conta.nome == nome}
+      @contas.delete_at isub
     end
   end
 end
