@@ -1,5 +1,5 @@
 module Monetizacao
-  class Subdivisao
+  class Conta
     attr_accessor :padrao, :valor, :debitos_mensais
     attr_reader :nome
 
@@ -24,7 +24,7 @@ module Monetizacao
 
       nome = @nome.is_a?(Symbol) ? @nome : @nome.clone
 
-      Subdivisao.new(nome, @padrao, @valor, debitos)
+      Conta.new(nome, @padrao, @valor, debitos)
     end
 
     def depositar(valor)

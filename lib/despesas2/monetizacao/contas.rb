@@ -1,5 +1,5 @@
 module Monetizacao
-  class Subdivisoes
+  class Contas
     extend Forwardable
     include Enumerable
 
@@ -11,7 +11,7 @@ module Monetizacao
 
     def clone
       subdivisoes = @subdivisoes.map(&:clone)
-      Subdivisoes.new(subdivisoes)
+      Contas.new(subdivisoes)
     end
 
     def [](nome)

@@ -11,7 +11,7 @@ module DSL
     end
 
     def nova_conta(nome)
-      subdivisao = Monetizacao::Subdivisao.new(nome)
+      subdivisao = Monetizacao::Conta.new(nome)
       @financeiro.subdivisoes << subdivisao
     end
 

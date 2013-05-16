@@ -26,7 +26,7 @@ end
 
 module Monetizacao
   FactoryGirl.define do
-    factory :subdivisao, class: Subdivisao do
+    factory :conta, class: Conta do
       ignore do
         nome :cofre
       end
@@ -34,7 +34,7 @@ module Monetizacao
       initialize_with{ new(nome) }
     end
 
-    factory :subdivisoes, class: Subdivisoes do
+    factory :contas, class: Contas do
       ignore do
         subdivisoes []
       end
