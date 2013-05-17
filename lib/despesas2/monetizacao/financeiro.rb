@@ -5,19 +5,15 @@ module Monetizacao
     attr_accessor :debitos_mensais
     attr_accessor :emprestimos
 
-    NOME_CONTA_PRINCIPAL = :principal
-
-    def initialize(contas=Contas.new, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
+    def initialize(contas=RepositorioContas.new, creditos_mensais={}, debitos_mensais={}, emprestimos=Hash.new(0))
       @contas = contas
-      @contas << Conta.new(NOME_CONTA_PRINCIPAL)
       @creditos_mensais = creditos_mensais
       @debitos_mensais = debitos_mensais
       @emprestimos = emprestimos
     end
 
     def saldo_sem_resto
-      contas = @contas.select{|conta| conta.nome != NOME_CONTA_PRINCIPAL}
-      return contas.map(&:valor).inject(&:+)
+      return @contas.secundarias.map(&:valor).inject(:+)
     end
 
     def each_emprestimo(&block)
@@ -34,7 +30,7 @@ module Monetizacao
     end
 
     def principal
-      @contas[NOME_CONTA_PRINCIPAL]
+      @contas.principal
     end
 
     def clone

@@ -6,7 +6,7 @@
   <% diff = conta.valor %>
 <% end %>
 <ul class="conta <%= class_lucro(diff) %>">
-	<li class="nome"><%= Monetizacao::Financeiro::NOME_CONTA_PRINCIPAL %></li>
+	<li class="nome"><%= Monetizacao::RepositorioContas::NOME_PRINCIPAL %></li>
 	<li class="valor"><%= dinheiro conta.valor %></li>
   <% if diff < 0 %>
     <li class="debito"><%= dinheiro diff.abs %></li>
