@@ -1,4 +1,5 @@
 require 'logger'
+require './lib/despesas2/model.rb'
 require './lib/despesas2/monetizacao'
 require './lib/despesas2/temporizacao'
 require './lib/despesas2/dsl'

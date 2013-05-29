@@ -1,1 +1,1 @@
-require './lib/despesas2/model/tempo.rb'
+require './lib/despesas2/model/colecao_nomeada.rb'
