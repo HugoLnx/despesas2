@@ -1,19 +1,11 @@
 require 'spec_helper'
 
 module Model
-  describe ColecaoNomeada do
-    class Barbatana
-      attr_reader :nome
-
-      def initialize(nome)
-        @nome = nome
-      end
-    end
-
+  describe ColecaoNomeada, 'dado uma classe que tenha um método nome e outra que represente uma coleção da primeira' do
     class Barbatanas
       extend ColecaoNomeada
 
-      named_collection_of Barbatana, :@barbatanas
+      named_collection_of :@barbatanas
 
       def initialize(barbatanas=[])
         @barbatanas = barbatanas
@@ -22,10 +14,17 @@ module Model
 
     subject{Barbatanas.new}
 
-    it 'inserção e recuperação' do
-      enrugada = Barbatana.new :enrugada
-      lisa = Barbatana.new :lisa
+    let(:enrugada){stub :enrugada, nome: :enrugada}
+    let(:lisa){stub :lisa, nome: :lisa}
 
+    it 'recupera-se o elemento através do seu nome' do
+      barbatanas = Barbatanas.new([enrugada, lisa])
+
+      barbatanas[:lisa].should be_equal lisa
+      barbatanas[:enrugada].should be_equal enrugada
+    end
+
+    it 'inserção é feita como em uma array' do
       barbatanas = Barbatanas.new
 
       barbatanas << enrugada
@@ -35,10 +34,7 @@ module Model
       barbatanas[:lisa].should == lisa
     end
 
-    it 'coleção' do
-      enrugada = Barbatana.new :enrugada
-      lisa = Barbatana.new :lisa
-
+    it 'implementa o #each normalmente' do
       barbatanas = Barbatanas.new([enrugada, lisa])
 
       barbatanas.each do |barbatana|
@@ -46,29 +42,28 @@ module Model
       end
     end
 
-    describe "#+(coleção)" do
+    describe "#+(coleção) uni com outra coleção" do
       before :each do
         @barbatanas_vazia = Barbatanas.new
-        @enrugada = Barbatana.new :enrugada
+        @enrugada = enrugada
       end
 
-      context 'contas como instancia de Array' do
-        it 'nova coleção de contas com as contas das duas coleções' do
-          barbatanas = @barbatanas_vazia + [@enrugada]
+      it 'pode receber array' do
+        barbatanas = @barbatanas_vazia + [@enrugada]
 
-          barbatanas.should == Barbatanas.new([@enrugada])
-          @barbatanas_vazia.should be_empty
-        end
+        barbatanas.should == Barbatanas.new([@enrugada])
+        @barbatanas_vazia.should be_empty
       end
 
-      context 'contas como instancia de Contas' do
-        it 'nova coleção de contas com as contas das duas coleções' do
-          barbatanas = @barbatanas_vazia + Barbatanas.new([@enrugada])
+      it 'pode receber outra coleção nomeada' do
+        barbatanas = @barbatanas_vazia + Barbatanas.new([@enrugada])
 
-          barbatanas.should == Barbatanas.new([@enrugada])
-          @barbatanas_vazia.should be_empty
-        end
+        barbatanas.should == Barbatanas.new([@enrugada])
+        @barbatanas_vazia.should be_empty
       end
+
+      it 'tratamento para coleções nomeadas com nomes iguais'
+      it 'tratamento para arrays com elementos que não têm o método nome'
     end
   end
 end

@@ -1,6 +1,6 @@
 module Model
   module ColecaoNomeada
-    def named_collection_of(klass, var)
+    def named_collection_of(var)
       self.class_eval do
         @@__var__ = var
         extend Forwardable
