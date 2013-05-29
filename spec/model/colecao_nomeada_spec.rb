@@ -5,7 +5,7 @@ module Model
     class Barbatanas
       extend ColecaoNomeada
 
-      named_collection_of :@barbatanas
+      colecao_nomeada_para :@barbatanas
 
       def initialize(barbatanas=[])
         @barbatanas = barbatanas
