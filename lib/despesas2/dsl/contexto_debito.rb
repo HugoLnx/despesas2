@@ -64,6 +64,18 @@ module DSL
           debito && debito.pago = true
         end
 
+        define_method :fim_mensal do |nome_ou_hash|
+          if nome_ou_hash.is_a? String
+            nome = nome_ou_hash
+            financeiro.debitos_mensais.delete nome
+          else
+            hash = nome_ou_hash
+            conta = hash.keys.first
+            nome = hash.values.first
+            financeiro.contas[conta].debitos_mensais.delete nome
+          end
+        end
+
       end
     end
   end

@@ -92,6 +92,15 @@ describe "agendamento mensal" do
 
           fevereiro do
           end
+
+          março do
+            debito do
+              fim_mensal "desconto"
+            end
+          end
+
+          abril do
+          end
         end
       end
 
@@ -111,6 +120,20 @@ describe "agendamento mensal" do
         ano = subject.anos[2012]
         debitos_pendentes = ano.meses[:fevereiro].debitos_pendentes.map(&:first)
         debitos_pendentes.should include "desconto"
+      end
+
+      it 'debito mensal pode ser apagado' do
+        ano = subject.anos[2012]
+        debitos_marco = ano.meses[:março].debitos_pendentes.map(&:first)
+        debitos_marco.should_not include "desconto"
+
+        debitos_abril = ano.meses[:março].debitos_pendentes.map(&:first)
+        debitos_abril.should_not include "desconto"
+      end
+
+      it 'débito mensal não conta no mês que é apagado' do
+        ano = subject.anos[2012]
+        ano.meses[:março].financeiro.principal.valor.should == 3000.0
       end
     end
   end
