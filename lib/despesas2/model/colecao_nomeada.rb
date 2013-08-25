@@ -2,16 +2,14 @@ module Model
   module ColecaoNomeada
     def colecao_nomeada_para(var)
       self.class_eval do
-        @@__var__ = var
         extend Forwardable
         include Enumerable
 
         def_delegators var, :push, :<<, :empty?, :each
 
-        def var
-          @@__var__
+        define_method :var do
+          var
         end
-        private :var
 
         def clone
           array = instance_variable_get(var).map(&:clone)
